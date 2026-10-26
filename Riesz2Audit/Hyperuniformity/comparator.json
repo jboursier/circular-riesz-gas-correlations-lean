@@ -1,0 +1,12 @@
+{
+  "challenge_module": "Riesz2Audit.Hyperuniformity.Challenge",
+  "solution_module": "Riesz2Audit.Hyperuniformity.Solution",
+  "theorem_names": [
+    "Riesz2Audit.Hyperuniformity.Riesz2.hyperuniformity"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

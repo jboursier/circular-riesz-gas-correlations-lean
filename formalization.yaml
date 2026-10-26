@@ -1,0 +1,347 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Decay of correlations and thermodynamic limit for the circular Riesz gas"
+  description: >-
+    A Lean 4 formalization of the paper "Decay of correlations and thermodynamic limit for
+    the circular Riesz gas" by Jeanne Boursier: long-range gap correlations and sharpness of
+    the decay exponent (Theorem 1), short-range gap correlations (Theorem 2), a unique local
+    total variation limit (Theorem 3), quantitative convergence of labelled gaps to the Palm
+    law (Theorem 4), count and Palm span CLTs, variance asymptotics and hyperuniformity
+    (Corollary 1.1), and Palm gap repulsion (Proposition 1.2). All statements hold for every
+    beta > 0 in their respective exponent ranges. The development imports Mathlib and the
+    companion formalization Riesz1, and uses its proved results.
+    The six main results have Mathlib-only comparator pairs under Riesz2Audit/.
+  authors:
+    - "Jeanne Boursier"
+  responsible_maintainers:
+    - "Jeanne Boursier"
+  license: "Apache-2.0"
+
+classification:
+  arxiv: ["math.PR", "math-ph"]
+  msc2020: ["82B05", "60F05", "82B21", "60G55", "60B20"]
+
+sources:
+  - title: "Decay of correlations and thermodynamic limit for the circular Riesz gas"
+    authors:
+      - "Jeanne Boursier"
+    type: "paper"
+    relationship: "formalizes"
+    location: "https://arxiv.org/abs/2209.00396"
+    note: >-
+      Revised version (2026). The repository uses its numbering: Theorems 1, 2, 3 and 4,
+      Corollary 1.1 and Proposition 1.2. The encodings and additional explicit conclusions
+      are described under fidelity.divergences and in the README.
+    license: "author's copyright"
+    author_endorsement: "participated"
+  - title: "Optimal local laws and central limit theorem for the circular Riesz gas"
+    authors:
+      - "Jeanne Boursier"
+    type: "paper"
+    relationship: "background"
+    location: "https://arxiv.org/abs/2112.05881"
+    note: >-
+      Proved companion results, imported as the Lake package Riesz1 from
+      https://github.com/jboursier/circular-riesz-gas-lean at commit
+      72fbdc2b2ea09a2ad64b8ae25074f30a3805b747. This repository uses the proved results of
+      the imported formalization, including its proved external results.
+    license: "author's copyright"
+    author_endorsement: "participated"
+  - title: "NIST Digital Library of Mathematical Functions, Equation 25.13.3"
+    type: "reference"
+    relationship: "independently-proves"
+    location: "https://dlmf.nist.gov/25.13.E3"
+    note: >-
+      Proved periodic-zeta connection formula with ordered cosine partial sums.
+      Statement: Riesz2.External.PeriodicZeta in Riesz2/Frozen/External/PeriodicZeta.lean.
+      Proof: Riesz2.External.periodicZeta, with provider
+      Riesz2.Main.External.periodicZeta in Riesz2/Main/External/PeriodicZeta.lean.
+  - title: "Locally uniform long-range gap rigidity from the companion paper"
+    authors:
+      - "Jeanne Boursier"
+    type: "paper"
+    relationship: "independently-proves"
+    location: "https://arxiv.org/abs/2112.05881"
+    note: >-
+      Proved compact-temperature uniformity of the companion Theorem 1(1), the clause
+      not exported by the pinned companion theorem. The fixed-temperature rigidity
+      theorem itself is imported. Statement: Riesz2.External.LongRangeRigidityLocallyUniform
+      in Riesz2/Frozen/External/LongRangeRigidityLocallyUniform.lean. Proof:
+      Riesz2.External.longRangeRigidityLocallyUniform, with provider in
+      Riesz2/Main/External/LongRangeRigidityLocallyUniform.lean.
+    license: "author's copyright"
+    author_endorsement: "participated"
+  - title: "Dimensionality and the stability of the Brunn–Minkowski inequality"
+    authors:
+      - "Ronen Eldan"
+      - "Bo'az Klartag"
+    type: "paper"
+    relationship: "independently-proves"
+    location: "https://arxiv.org/abs/1110.6584"
+    note: >-
+      Proved one-dimensional log-concave central density bound and Poincare inequality,
+      Lemmas 2.1 and 2.2(b). Statement: Riesz2.External.ThermodynamicLogConcavity in
+      Riesz2/Frozen/External/ThermodynamicLogConcavity.lean. Proof:
+      Riesz2.External.thermodynamicLogConcavity, with provider in
+      Riesz2/Main/External/ThermodynamicLogConcavity.lean.
+  - title: "Theoretical properties of the log-concave maximum likelihood estimator of a multidimensional density"
+    authors:
+      - "Madeleine Cule"
+      - "Richard Samworth"
+    type: "paper"
+    relationship: "independently-proves"
+    location: "https://doi.org/10.1214/09-EJS505"
+    note: >-
+      Proved log-concave density convergence and exponential tails, Lemma 1 and
+      Proposition 2(a),(c). Statement: Riesz2.External.LogConcaveConvergence in
+      Riesz2/Frozen/External/LogConcaveConvergence.lean. Proof:
+      Riesz2.External.logConcaveConvergence, with provider in
+      Riesz2/Main/External/LogConcaveConvergence.lean. The convergence statement includes
+      a log-concave representative and unweighted and exponentially weighted L1 convergence.
+
+related_formalizations:
+  - id: "https://github.com/jboursier/circular-riesz-gas-lean"
+    relationship: "builds-on"
+    revision: "72fbdc2b2ea09a2ad64b8ae25074f30a3805b747"
+    note: "Imported as the Lake package Riesz1, with all its proofs."
+
+# All these inputs are proved. The standard's per-result literature_dependencies fields,
+# reserved for unproved literature assumptions, are therefore empty.
+proved_literature_inputs:
+  - statement: "Companion library: finite long-range model, rigidity and fluctuation results"
+    source: "Optimal local laws and central limit theorem for the circular Riesz gas"
+    status: "proved"
+    proof: "Imported package Riesz1 at 72fbdc2b2ea09a2ad64b8ae25074f30a3805b747"
+  - statement: "Riesz2.External.PeriodicZeta"
+    source: "NIST Digital Library of Mathematical Functions, Equation 25.13.3"
+    status: "proved"
+    declaration: "Riesz2.External.periodicZeta"
+    file: "Riesz2/Frozen/External/PeriodicZetaProof.lean"
+    provider: "Riesz2/Main/External/PeriodicZeta.lean"
+  - statement: "Riesz2.External.LongRangeRigidityLocallyUniform"
+    source: "Locally uniform long-range gap rigidity from the companion paper"
+    status: "proved"
+    declaration: "Riesz2.External.longRangeRigidityLocallyUniform"
+    file: "Riesz2/Frozen/External/LongRangeRigidityLocallyUniformProof.lean"
+    provider: "Riesz2/Main/External/LongRangeRigidityLocallyUniform.lean"
+  - statement: "Riesz2.External.ThermodynamicLogConcavity"
+    source: "Dimensionality and the stability of the Brunn–Minkowski inequality"
+    status: "proved"
+    declaration: "Riesz2.External.thermodynamicLogConcavity"
+    file: "Riesz2/Frozen/External/ThermodynamicLogConcavityProof.lean"
+    provider: "Riesz2/Main/External/ThermodynamicLogConcavity.lean"
+  - statement: "Riesz2.External.LogConcaveConvergence"
+    source: "Theoretical properties of the log-concave maximum likelihood estimator of a multidimensional density"
+    status: "proved"
+    declaration: "Riesz2.External.logConcaveConvergence"
+    file: "Riesz2/Frozen/External/LogConcaveConvergenceProof.lean"
+    provider: "Riesz2/Main/External/LogConcaveConvergence.lean"
+
+status:
+  scope: >-
+    Theorem 1 (Riesz2.longRangeGapCorrelations) for 0 < s < 1, Theorem 2
+    (Riesz2.shortRangeGapCorrelations) for s > 1, Theorem 3 (Riesz2.convergence),
+    Theorem 4 (Riesz2.quantitativeConvergence) and Proposition 1.2 (Riesz2.repulsion)
+    for s > 0 with s != 1, and Corollary 1.1 (Riesz2.hyperuniformity) for 0 < s < 1.
+    Every result holds for every beta > 0. The six statements quantify their constants at
+    each fixed beta. The library also proves compact-temperature versions of Theorems 1, 2
+    and 4 and Proposition 1.2: Riesz2.longRangeGapCorrelations_locallyUniform,
+    Riesz2.DecayShort.shortRangeGapCorrelations_locallyUniform,
+    Riesz2.QuantitativeConvergenceResult.quantitativeConvergence_locallyUniform and
+    Riesz2.repulsion_locallyUniform. The first takes the proved inputs
+    Riesz2.External.PeriodicZeta and Riesz2.External.LongRangeRigidityLocallyUniform as
+    arguments, and the third and fourth take Riesz2.External.LogConcaveConvergence.
+    Supporting results include the four further literature inputs listed above, all proved.
+    The companion library is imported. The paper's remarks on DLR equations and on the
+    failure of number rigidity are not formalized.
+  sorry_count: 0
+  sorry_count_scope: "Riesz2 library only"
+  comparator_challenge_sorry_count: 6
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  main_results:
+    - declaration: "Riesz2.longRangeGapCorrelations"
+      file: "Riesz2/Frozen/LongRangeGapCorrelations.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/LongRangeGapCorrelations/comparator.json"
+      literature_dependencies: []
+    - declaration: "Riesz2.shortRangeGapCorrelations"
+      file: "Riesz2/Frozen/ShortRangeGapCorrelations.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/ShortRangeGapCorrelations/comparator.json"
+      literature_dependencies: []
+    - declaration: "Riesz2.convergence"
+      file: "Riesz2/Frozen/Convergence.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/Convergence/comparator.json"
+      literature_dependencies: []
+    - declaration: "Riesz2.quantitativeConvergence"
+      file: "Riesz2/Frozen/QuantitativeConvergence.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/QuantitativeConvergence/comparator.json"
+      literature_dependencies: []
+    - declaration: "Riesz2.hyperuniformity"
+      file: "Riesz2/Frozen/Hyperuniformity.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/Hyperuniformity/comparator.json"
+      literature_dependencies: []
+    - declaration: "Riesz2.repulsion"
+      file: "Riesz2/Frozen/Repulsion.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Riesz2Audit/Repulsion/comparator.json"
+      literature_dependencies: []
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "gpt-6.1-sol"
+      framework: "Codex CLI (OpenAI)"
+      tool_setup: >-
+        Statement writing, proof development and refute-first audits of the statements against
+        the paper, with Lean builds under leanprover/lean4:v4.35.0 and Mathlib v4.35.0.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local macOS machine"
+      prompting_notes: >-
+        Human-directed work. Each task fixed the statements to be proved and forbade changing
+        them.
+    - method: "agent"
+      models:
+        - "claude-opus-5-5"
+        - "claude-haiku-5-5"
+      framework: "Claude Code (Anthropic)"
+      tool_setup: >-
+        Claude Opus 5.5 coordinated the agents, reviewed their work and prepared the release.
+        Claude Haiku 5.5 made blind back-translations of the Lean statements into mathematics,
+        without access to the paper, and mechanical edits.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "local macOS machine"
+      prompting_notes: >-
+        Human-directed work on author-specified statements.
+  spend_usd: "not tracked"
+  notes: >-
+    The Lean code was written with AI assistance under the direction of the author, who fixed
+    the statements to be formalized. Every proof is checked by the Lean kernel, and
+    the library contains no sorry and no custom axiom. The six Mathlib-only comparator
+    challenge files (Riesz2Audit/*/Challenge.lean) each contain exactly one intentional
+    statement-level sorry, which the corresponding Solution.lean proves and leanprover/comparator
+    checks. The revision of the paper that this repository formalizes was prepared with
+    GPT-6 Astra and Claude Opus 5.5. Scott Armstrong provided the skill files used for the
+    formalization.
+
+fidelity:
+  divergences: >-
+    Parameters are exactly beta > 0, s > 0 and s != 1, with the long-range and short-range
+    statements restricted to their respective regimes. Constants follow the quantifier order
+    in the Lean statements. In the correlation bounds delta is chosen before beta, and in
+    the lower bound c0 is chosen before the mesoscopic sequence, independently of epsilon.
+    The six statements quantify their constants at fixed beta. The paper's convention makes
+    constants locally uniform in beta, and the library proves these versions of Theorems 1,
+    2 and 4 and Proposition 1.2 as the four locallyUniform declarations listed under
+    status.scope. Finite configurations are the companion
+    library's ordered real lifts x_0 < ... < x_{N-1} < x_0+1, with 0 <= x_0 < 1, and the paper's
+    label 1 is label 0. Gaps use the cyclic integer extension. The long-range Gibbs law is
+    imported unchanged from Riesz1, with twice the real part of Mathlib's even Hurwitz zeta
+    function as kernel. Its assigned collision value is unused by the off-diagonal energy.
+    The short-range kernel is the convergent lattice sum off the integer lattice. Both
+    energies count ordered pairs. GapObservable supplies a Lipschitz function and an almost everywhere strongly measurable, essentially bounded representative of its
+    almost everywhere derivative, encoding local absolute continuity with bounded derivative.
+    Derivative supremum norms are Lebesgue essential suprema. The correlation estimates cover
+    N = 1 in addition to the paper's N >= 2. BlockObservable uses the supremum metric on the
+    finite product, and each coordinate derivative norm is specified as its least coordinate
+    Lipschitz constant. The finite gap law is the pushforward by the full cyclic gap vector.
+    Configurations on the line are locally finite simple sets, with the
+    sigma-algebra generated by bounded Borel counts. Counts in all Borel sets give the same
+    sigma-algebra by bounded exhaustion. Microscopic laws keep centered positions in
+    (-1/4,1/4) and rescale by N. Palm measures use the Campbell formula with roots in [0,1),
+    followed by pullback to configurations containing zero and unbounded in both directions.
+    The rooted enumeration uses infima and suprema. UniqueRieszLimit concludes existence and
+    uniqueness of a local total variation limit among point processes. Uniqueness concerns the
+    point-process limit of the microscopic laws in local total variation. Total variation is sup_A |mu(A)-nu(A)| on every window [-R,R].
+    PalmRegular concludes carrier measurability, full support mass, normalization of rooted
+    and unrooted Palm measures, zero mass of the complement, index stationarity of the gap
+    sequence and integrable mean-one gaps. Theorem 3 additionally makes uniqueness, intensity
+    one and Palm regularity explicit. Its stationarity conclusion corresponds to the
+    translation invariance stated in the paper. Existence of the limit is concluded again in
+    Theorem 4, Corollary 1.1 and Proposition 1.2. Particle-number limits use N = n+1.
+    Mesoscopic sequences have positive integer values at every positive integer particle number,
+    with n_N tending to infinity and n_N/N tending to zero. Theorem 4's real bound on positive
+    integer K is equivalent to the floor bound and already excludes N = 1. Convergence in law
+    tests all bounded continuous real functions and includes probability normalization. Count limits use all positive real radii, and Palm span limits
+    use K = n+1. Integrals, series, inverses and extended-real conversions are total, so the
+    correlation statements conclude all four second moments and their measurability. The
+    mesoscopic lower bound in Theorem 1 also explicitly concludes finite second moments and
+    almost everywhere strong measurability of the two selected gaps. Theorem 4
+    concludes both integrability assertions, and Corollary 1.1 concludes all interval-count and
+    positive Palm-span second moments, finite variance asymptotics and sublinear number
+    variance. Variances take values in [0,infinity]. Finite-model measurability, partition
+    positivity and finiteness, and Gibbs normalization are proved separately by finiteModel_valid
+    and gibbsMeasure_probability.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "GPT-6.1 Sol, independent refute-first audits of every statement and definition"
+    - "Claude Haiku 5.5, blind back-translation of every statement and definition"
+  notes: >-
+    Every proof is checked by the Lean kernel, and the six main statements have
+    comparator pairs for replay by independent kernels through leanprover/comparator. The statements
+    and the definitions they use were written before the proofs and compared with the paper by
+    refute-first audits of agents that did not write them, including a blind back-translation
+    of the Lean text into mathematics. Riesz2/Sanity/ checks the definitions against known
+    values.
+
+alignment:
+  namespace: "Riesz2"
+  statements:
+    - source: "Theorem 1 (long-range gap correlations)"
+      lean: "Riesz2.longRangeGapCorrelations"
+      module: "Riesz2.Frozen.LongRangeGapCorrelations"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/LongRangeGapCorrelations/, with shared Definitions.lean."
+    - source: "Theorem 2 (short-range gap correlations)"
+      lean: "Riesz2.shortRangeGapCorrelations"
+      module: "Riesz2.Frozen.ShortRangeGapCorrelations"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/ShortRangeGapCorrelations/, with shared Definitions.lean."
+    - source: "Theorem 3 (convergence of the microscopic point process)"
+      lean: "Riesz2.convergence"
+      module: "Riesz2.Frozen.Convergence"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/Convergence/, with shared Definitions.lean."
+    - source: "Theorem 4 (quantitative convergence)"
+      lean: "Riesz2.quantitativeConvergence"
+      module: "Riesz2.Frozen.QuantitativeConvergence"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/QuantitativeConvergence/, with shared Definitions.lean."
+    - source: "Corollary 1.1 (hyperuniformity)"
+      lean: "Riesz2.hyperuniformity"
+      module: "Riesz2.Frozen.Hyperuniformity"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/Hyperuniformity/, with shared Definitions.lean."
+    - source: "Proposition 1.2 (repulsion)"
+      lean: "Riesz2.repulsion"
+      module: "Riesz2.Frozen.Repulsion"
+      status: "proved"
+      note: "Comparator surface: Riesz2Audit/Repulsion/, with shared Definitions.lean."
+
+acknowledgements: >-
+  Built on Lean 4, Mathlib, Lake, the imported companion library Riesz1,
+  leanprover/comparator, NanoDa and con-ron. Scott Armstrong provided the skill files used
+  for the formalization. The author was supported by a grant from the Fondation CFM pour
+  la Recherche and by the ERC Advanced Grant LDRAM (ERC-2019-ADG 884584).

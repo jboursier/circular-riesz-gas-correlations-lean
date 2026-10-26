@@ -1,0 +1,37 @@
+name = "Riesz2"
+version = "1.0.0"
+defaultTargets = ["Riesz2"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+relaxedAutoImplicit = false
+linter.unusedVariables = true
+linter.unusedSectionVars = true
+linter.unusedSimpArgs = true
+linter.unnecessarySimpa = true
+linter.deprecated = true
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0"
+
+# The formalization of the companion paper (arXiv:2112.05881), pinned at a commit of its public
+# release.
+[[require]]
+name = "Riesz1"
+git = "https://github.com/jboursier/circular-riesz-gas-lean.git"
+rev = "72fbdc2b2ea09a2ad64b8ae25074f30a3805b747"
+
+[[lean_lib]]
+name = "Riesz2"
+# Build the root and every module under the namespace.
+globs = ["Riesz2", "Riesz2.+"]
+
+
+[[lean_lib]]
+name = "Riesz2Audit"
+# The comparator pairs. Each challenge has one intentional `sorry`, so this library is not a
+# default target: build it with `lake build Riesz2Audit`.
+globs = ["Riesz2Audit.+"]

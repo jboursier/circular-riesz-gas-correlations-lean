@@ -1,0 +1,12 @@
+{
+  "challenge_module": "Riesz2Audit.ShortRangeGapCorrelations.Challenge",
+  "solution_module": "Riesz2Audit.ShortRangeGapCorrelations.Solution",
+  "theorem_names": [
+    "Riesz2Audit.ShortRangeGapCorrelations.Riesz2.shortRangeGapCorrelations"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

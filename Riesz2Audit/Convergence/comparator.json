@@ -1,0 +1,12 @@
+{
+  "challenge_module": "Riesz2Audit.Convergence.Challenge",
+  "solution_module": "Riesz2Audit.Convergence.Solution",
+  "theorem_names": [
+    "Riesz2Audit.Convergence.Riesz2.convergence"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

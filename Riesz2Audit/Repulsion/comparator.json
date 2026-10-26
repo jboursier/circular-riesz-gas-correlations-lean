@@ -1,0 +1,12 @@
+{
+  "challenge_module": "Riesz2Audit.Repulsion.Challenge",
+  "solution_module": "Riesz2Audit.Repulsion.Solution",
+  "theorem_names": [
+    "Riesz2Audit.Repulsion.Riesz2.repulsion"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

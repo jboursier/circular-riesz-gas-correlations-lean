@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "Decay of correlations and thermodynamic limit for the circular Riesz gas: a Lean 4 formalization"
+type: software
+repository-code: "https://github.com/jboursier/circular-riesz-gas-correlations-lean"
+abstract: >-
+  A machine-checked Lean 4 and Mathlib formalization of the main results of the paper
+  "Decay of correlations and thermodynamic limit for the circular Riesz gas": long-range
+  and short-range gap correlation estimates, the thermodynamic limit and quantitative
+  convergence of labelled gaps, hyperuniformity of the long-range limit and repulsion
+  under the Palm law. The results cover every positive inverse temperature in their
+  respective ranges of positive Riesz exponents different from one. The development
+  imports the companion formalization as Riesz1. The library contains no sorry and no
+  custom axiom, and each of the six main results has a Mathlib-only comparator challenge.
+authors:
+  - family-names: Boursier
+    given-names: Jeanne
+keywords:
+  - Lean
+  - mathlib
+  - formal verification
+  - Riesz gas
+  - decay of correlations
+  - thermodynamic limit
+  - hyperuniformity
+  - central limit theorem
+license: Apache-2.0
+preferred-citation:
+  type: article
+  title: "Decay of correlations and thermodynamic limit for the circular Riesz gas"
+  authors:
+    - family-names: Boursier
+      given-names: Jeanne
+  identifiers:
+    - type: other
+      value: "arXiv:2209.00396"
+  url: "https://arxiv.org/abs/2209.00396"
+  year: 2022

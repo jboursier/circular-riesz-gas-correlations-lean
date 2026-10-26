@@ -1,0 +1,86 @@
+name: Comparator audit
+
+permissions:
+  contents: read
+
+# Checks the six comparator pairs under Riesz2Audit/, one job per pair, after each successful
+# CI run on `main`. Each job restores the library build of that run, so that it compiles only
+# the challenge and the solution of its pair.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  comparator:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    name: ${{ matrix.pair }} (Lean, NanoDa, con-ron)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 345
+    strategy:
+      fail-fast: false
+      matrix:
+        pair:
+          - LongRangeGapCorrelations
+          - ShortRangeGapCorrelations
+          - Convergence
+          - QuantitativeConvergence
+          - Hyperuniformity
+          - Repulsion
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+
+      - name: Prepare the runner for the sandbox
+        shell: bash
+        run: |
+          sudo sysctl -w vm.max_map_count=262144
+          # Ubuntu's user-namespace restriction prevents bubblewrap from setting up its
+          # isolated network namespace.
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          sudo apt-get update -qq
+          sudo apt-get install -y bubblewrap
+          bwrap --unshare-all --ro-bind / / --dev /dev --proc /proc -- /bin/true
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /usr/local/share/powershell \
+                      /usr/share/swift /usr/local/share/boost || true
+          df -h /
+
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-mathlib-cache: true
+
+      # Restore only: the CI workflow owns this cache. On a miss the comparator compiles the
+      # library itself.
+      - name: Restore project build artifacts
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: |
+            .lake/build
+            .lake/packages/Riesz1/.lake/build
+          key: lake-proj-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.event.workflow_run.head_sha || github.sha }}
+          restore-keys: |
+            lake-proj-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Run the comparator
+        run: scripts/run_comparators.sh ${{ matrix.pair }}
+
+      - name: Upload the comparator log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparator-${{ matrix.pair }}
+          path: .lake/comparator-logs/*.log

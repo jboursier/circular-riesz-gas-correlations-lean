@@ -1,0 +1,94 @@
+name: CI
+
+permissions:
+  contents: read
+
+# Builds the library on a GitHub-hosted runner, rejects any warning, sweeps the sources and
+# checks the axiom report of the six main results.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - 'CITATION.cff'
+      - 'formalization.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and axiom audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Reclaim runner disk space
+        shell: bash
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc \
+                      /usr/local/.ghcup /usr/local/share/powershell \
+                      /usr/share/swift /usr/local/share/boost || true
+          sudo docker image prune --all --force >/dev/null 2>&1 || true
+          df -h /
+
+      # Installs the toolchain named in `lean-toolchain` and downloads the Mathlib oleans.
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-mathlib-cache: true
+
+      # The cache holds the builds of this library and of the companion package `Riesz1`. The
+      # restore key has no commit hash, so it matches the most recent build with the same
+      # toolchain and manifest, which makes an ordinary push an incremental build.
+      - name: Restore project build artifacts
+        id: cache-restore
+        uses: actions/cache/restore@v6.1.0
+        with:
+          path: |
+            .lake/build
+            .lake/packages/Riesz1/.lake/build
+          key: lake-proj-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lake-proj-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      # A first build from scratch compiles `Riesz1` and this library. If it reaches the step
+      # timeout, the next step saves the modules built, and a rerun continues from them.
+      - name: Build the library and enforce zero warnings
+        timeout-minutes: 320
+        shell: bash
+        run: |
+          set -o pipefail
+          lake build 2>&1 | tee build.log
+          echo "Warnings: $(grep -ic 'warning:' build.log || true)"
+          if grep -iE '(^|[[:space:]])warning:|declaration uses .sorry|sorryAx' build.log; then
+            echo "The build must have zero warnings and no incomplete proofs."
+            exit 1
+          fi
+
+      - name: Source sweep
+        run: python3 scripts/check_sources.py .
+
+      # `Riesz2.Meta.AxiomsAudit` carries one `#print axioms` command per main result. Each
+      # result must depend on exactly the three standard axioms.
+      - name: Axiom audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean Riesz2/Meta/AxiomsAudit.lean 2>&1 | tee axioms-audit.log
+          python3 scripts/check_axioms.py axioms-audit.log
+
+      # Saved even when a later step fails, so that the next run starts from the modules built.
+      - name: Save project build artifacts
+        if: always() && steps.cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6.1.0
+        with:
+          path: |
+            .lake/build
+            .lake/packages/Riesz1/.lake/build
+          key: lake-proj-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
